@@ -382,8 +382,7 @@ tr:hover .cut {
 }
 
 .my-floater {
-    color: #fff !important;
+    color: #fff;
     margin-top: 15px;
-    font-size: 32px !important;
-    font-weight: bolder !important;
+    font-size: 32px;
 }
