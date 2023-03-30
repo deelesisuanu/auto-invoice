@@ -27,11 +27,11 @@
 			<table class="meta">
 				<tr>
 					<th><span contenteditable>Invoice #</span></th>
-					<td><span contenteditable>101138</span></td>
+					<td><span contenteditable id="content-invoice-no">101138</span></td>
 				</tr>
 				<tr>
 					<th><span contenteditable>Date</span></th>
-					<td><span contenteditable>January 1, 2021</span></td>
+					<td><span contenteditable id="content-date">January 1, 2021</span></td>
 				</tr>
 				<tr>
 					<th><span contenteditable>Amount Due</span></th>
@@ -84,6 +84,18 @@
         <a href="javascript:void(0);" onclick="window.print()" class="floater">
             <i class="fa fa-print my-floater"></i>
         </a>
+
+		<script>
+			const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+			const currentDate = new Date();
+			const invoiceNumber = randomNumberRange(5000000, 1000000);
+			const fullDate = `${month[currentDate.getMonth()]} ${currentDate.getDay()}, ${currentDate.getFullYear()}`;
+			document.querySelector('#content-date').innerHTML = fullDate;
+			document.querySelector('#content-invoice-no').innerHTML = invoiceNumber;
+			function randomNumberRange(max, min) {
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+		</script>
 
 	</body>
 </html>
