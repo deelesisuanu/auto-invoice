@@ -35,7 +35,7 @@
 				</tr>
 				<tr>
 					<th><span contenteditable>Amount Due</span></th>
-					<td><span id="prefix" contenteditable>$</span><span>600.00</span></td>
+					<td><span id="prefix" contenteditable class="content-currency">$</span><span>600.00</span></td>
 				</tr>
 			</table>
 			<table class="inventory">
@@ -52,9 +52,9 @@
 					<tr>
 						<td><a class="cut">-</a><span contenteditable>Front End Consultation</span></td>
 						<td><span contenteditable>Experience Review</span></td>
-						<td><span data-prefix>$</span><span contenteditable>150.00</span></td>
+						<td><span data-prefix class="content-currency">$</span><span contenteditable>150.00</span></td>
 						<td><span contenteditable>4</span></td>
-						<td><span data-prefix>$</span><span>600.00</span></td>
+						<td><span data-prefix class="content-currency">$</span><span>600.00</span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -62,15 +62,15 @@
 			<table class="balance">
 				<tr>
 					<th><span contenteditable>Total</span></th>
-					<td><span data-prefix>$</span><span>600.00</span></td>
+					<td><span data-prefix class="content-currency">$</span><span>600.00</span></td>
 				</tr>
 				<tr>
 					<th><span contenteditable>Amount Paid</span></th>
-					<td><span data-prefix>$</span><span contenteditable>0.00</span></td>
+					<td><span data-prefix class="content-currency">$</span><span contenteditable>0.00</span></td>
 				</tr>
 				<tr>
 					<th><span contenteditable>Balance Due</span></th>
-					<td><span data-prefix>$</span><span>600.00</span></td>
+					<td><span data-prefix class="content-currency">$</span><span>600.00</span></td>
 				</tr>
 			</table>
 		</article>
@@ -86,15 +86,22 @@
         </a>
 
 		<script>
+			
 			const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 			const currentDate = new Date();
 			const invoiceNumber = randomNumberRange(5000000, 1000000);
 			const fullDate = `${month[currentDate.getMonth()]} ${currentDate.getDay()}, ${currentDate.getFullYear()}`;
+			
+			const currencyCode = '&#8358;';
+
 			document.querySelector('#content-date').innerHTML = fullDate;
 			document.querySelector('#content-invoice-no').innerHTML = invoiceNumber;
+			document.querySelector('.content-currency').innerHTML = currencyCode;
+
 			function randomNumberRange(max, min) {
 				return Math.floor(Math.random() * (max - min + 1)) + min;
 			}
+			
 		</script>
 
 	</body>
