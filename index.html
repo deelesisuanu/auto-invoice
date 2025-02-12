@@ -48,7 +48,7 @@
 			}
 
 			/* Toolbar styles */
-			#toolbar {
+			.toolbar {
 				display: none;
 				position: absolute;
 				background: #fff;
@@ -59,7 +59,7 @@
 				z-index: 1000;
 			}
 
-			#toolbar button {
+			.toolbar button {
 				font-size: 12px;
 				margin: 2px;
 				padding: 5px;
@@ -69,13 +69,17 @@
 				border-radius: 3px;
 			}
 
-			#toolbar button:hover {
+			.toolbar button:hover {
 				background: #ddd;
 			}
 
-			#toolbar select {
+			.toolbar select {
 				padding: 2px;
 				font-size: 12px;
+			}
+			.right-aligned {
+				text-align: right;
+				margin-bottom: 40px;
 			}
 		</style>
 	</head>
@@ -123,20 +127,21 @@
 		</article>
 
 		<article>
-			<h2 contenteditable="true">Addressed To</h2>
-			<!-- Formatting Toolbar -->
-			<div id="toolbar" class="toolbar">
-				<button id="bold-btn"><b>B</b></button>
-				<button id="italic-btn"><i>I</i></button>
-				<button id="underline-btn"><u>U</u></button>
-				<button id="increase-font">A+</button>
-				<button id="decrease-font">A-</button>
+			<div>
+				<h2 contenteditable="true">Addressed To</h2>
+				<!-- Formatting Toolbar -->
+				<div class="toolbar">
+					<button class="bold-btn"><b>B</b></button>
+					<button class="italic-btn"><i>I</i></button>
+					<button class="underline-btn"><u>U</u></button>
+					<button class="increase-font">A+</button>
+					<button class="decrease-font">A-</button>
+				</div>
+				<!-- Editable Address -->
+				<address contenteditable="true" class="editable-address">
+					<span>Digits Designs &amp; Brands</span>
+				</address>
 			</div>
-
-			<!-- Editable Address -->
-			<address contenteditable="true" id="editable-address">
-				<span>Digits Designs &amp; Brands</span>
-			</address>
 			<table class="meta">
 				<tr>
 					<th><span contenteditable>Invoice #</span></th>
@@ -187,6 +192,9 @@
 				</tr>
 			</table>
 		</article>
+		<div class="right-aligned">
+			<p contenteditable="true">Addressed To</p>
+		</div>
 		<aside>
 			<h1><span contenteditable>Additional Notes</span></h1>
 			<div contenteditable>
@@ -276,24 +284,24 @@
 				}
 
 				// Attach event listeners to toolbar buttons
-				document.querySelector("#bold-btn").addEventListener("click", function () {
+				document.querySelector(".bold-btn").addEventListener("click", function () {
 					applyStyle("bold");
 				});
 
-				document.querySelector("#italic-btn").addEventListener("click", function () {
+				document.querySelector(".italic-btn").addEventListener("click", function () {
 					applyStyle("italic");
 				});
 
-				document.querySelector("#underline-btn").addEventListener("click", function () {
+				document.querySelector(".underline-btn").addEventListener("click", function () {
 					applyStyle("underline");
 				});
 
-				document.querySelector("#increase-font").addEventListener("click", function () {
+				document.querySelector(".increase-font").addEventListener("click", function () {
 					// applyStyle("fontSize", "5"); // Adjust font size (1-7 for execCommand)
 					changeFontSize(true);
 				});
 
-				document.querySelector("#decrease-font").addEventListener("click", function () {
+				document.querySelector(".decrease-font").addEventListener("click", function () {
 					// applyStyle("fontSize", "2");
 					changeFontSize(false);
 				});
