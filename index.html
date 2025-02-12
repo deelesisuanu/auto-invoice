@@ -137,8 +137,8 @@
 			const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 			const currentDate = new Date();
 			const invoiceNumber = randomNumberRange(5000000, 1000000);
-			const fullDate = `${month[currentDate.getMonth()]} ${currentDate.getDay()}, ${currentDate.getFullYear()}`;
-			
+			const fullDate = `${month[currentDate.getMonth()]} ${currentDate.getDate()}, ${currentDate.getFullYear()}`;
+
 			const currencyCode = '&#8358;';
 
 			document.querySelector('#content-date').innerHTML = fullDate;
