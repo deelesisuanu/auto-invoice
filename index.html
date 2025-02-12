@@ -244,6 +244,14 @@
 					}
 				}
 
+				function changeFontSize(increase) {
+					if (activeEditable) {
+						let currentSize = parseInt(window.getComputedStyle(activeEditable).fontSize);
+						let newSize = increase ? currentSize + 2 : Math.max(currentSize - 2, 10);
+						activeEditable.style.fontSize = `${newSize}px`;
+					}
+				}
+
 				// Attach event listeners to toolbar buttons
 				document.querySelector("#bold-btn").addEventListener("click", function () {
 					applyStyle("bold");
@@ -258,11 +266,13 @@
 				});
 
 				document.querySelector("#increase-font").addEventListener("click", function () {
-					applyStyle("fontSize", "5"); // Adjust font size (1-7 for execCommand)
+					// applyStyle("fontSize", "5"); // Adjust font size (1-7 for execCommand)
+					changeFontSize(true);
 				});
 
 				document.querySelector("#decrease-font").addEventListener("click", function () {
-					applyStyle("fontSize", "2");
+					// applyStyle("fontSize", "2");
+					changeFontSize(false);
 				});
 			});
 
