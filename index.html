@@ -7,6 +7,13 @@
 		<link rel="stylesheet" href="assets/css/style.css">
 		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
 		<script src="assets/js/script.js"></script>
+		<style>
+			h2 {
+				padding-bottom: 12px;
+				padding-top: 8px;
+				text-decoration: underline;
+			}
+		</style>
 	</head>
 	<body>
 		<header>
@@ -22,9 +29,36 @@
 				<input type="file" id="logoUploader" accept="image/*"/>
 			</span>
 		</header>
+
 		<article>
-			<h1>Recipient</h1>
-			<address contenteditable>
+			<h2 contenteditable="true">Customer Information</h2>
+			<table class="customer-info">
+				<thead>
+				<tr id="customer-fields">
+					<th><span contenteditable>Full Name</span> <a class="remove-field">×</a></th>
+					<th><span contenteditable>Email</span> <a class="remove-field">×</a></th>
+					<th><span contenteditable>Phone</span> <a class="remove-field">×</a></th>
+					<th><span contenteditable>Address</span> <a class="remove-field">×</a></th>
+					<th>Action</th>
+				</tr>
+				</thead>
+				<tbody id="customer-info-body">
+				<tr>
+					<td><span contenteditable>John Doe</span></td>
+					<td><span contenteditable>johndoe@example.com</span></td>
+					<td><span contenteditable>(123) 456-7890</span></td>
+					<td><span contenteditable>123 Main St, City, Country</span></td>
+					<td><a class="remove-customer">-</a></td>
+				</tr>
+				</tbody>
+			</table>
+			<a class="add-customer hidden-on-print" contenteditable>+ Add Customer</a>
+			<a class="add-field hidden-on-print" contenteditable>+ Add Field</a>
+		</article>
+
+		<article>
+			<h2 contenteditable="true">Addressed To</h2>
+			<address>
 				<p>Digits<br>Designs &amp; Brands</p>
 			</address>
 			<table class="meta">
@@ -84,7 +118,7 @@
 			</div>
 		</aside>
 
-        <a href="javascript:void(0);" onclick="window.print()" class="floater">
+        <a href="javascript:void(0);" onclick="printInvoice()" id="print-button" class="floater">
             <i class="fa fa-print my-floater"></i>
         </a>
 
@@ -106,6 +140,61 @@
 			}
 
 			document.addEventListener("DOMContentLoaded", function () {
+				manageLogoEvents();
+				manageCustomerEvents();
+			});
+
+			function manageCustomerEvents() {
+				const customerInfoBody = document.getElementById("customer-info-body");
+				const customerFields = document.getElementById("customer-fields");
+				const addCustomerBtn = document.querySelector(".add-customer");
+				const addFieldBtn = document.querySelector(".add-field");
+
+				// Function to add a new customer row
+				addCustomerBtn.addEventListener("click", function () {
+					const newRow = document.createElement("tr");
+					newRow.innerHTML = Array.from(customerFields.children)
+							.map(() => `<td><span contenteditable>Enter Data</span></td>`)
+							.join("") + `<td><a class="remove-customer">-</a></td>`;
+					customerInfoBody.appendChild(newRow);
+				});
+
+				// Function to remove a customer row
+				customerInfoBody.addEventListener("click", function (event) {
+					if (event.target.classList.contains("remove-customer")) {
+						event.target.closest("tr").remove();
+					}
+				});
+
+				// Function to add a new field (column)
+				addFieldBtn.addEventListener("click", function () {
+					const newField = document.createElement("th");
+					newField.innerHTML = `<span contenteditable>New Field</span> <a class="remove-field">×</a>`;
+					customerFields.insertBefore(newField, customerFields.lastElementChild); // Insert before action column
+
+					// Add a new empty column to existing rows
+					customerInfoBody.querySelectorAll("tr").forEach(row => {
+						const newCell = document.createElement("td");
+						newCell.innerHTML = `<span contenteditable>Enter Data</span>`;
+						row.insertBefore(newCell, row.lastElementChild); // Insert before action column
+					});
+				});
+
+				// Function to remove a field (column)
+				customerFields.addEventListener("click", function (event) {
+					if (event.target.classList.contains("remove-field")) {
+						const fieldIndex = Array.from(customerFields.children).indexOf(event.target.parentElement);
+						customerFields.children[fieldIndex].remove();
+
+						// Remove the corresponding column from all rows
+						customerInfoBody.querySelectorAll("tr").forEach(row => {
+							row.children[fieldIndex].remove();
+						});
+					}
+				});
+			}
+
+			function manageLogoEvents() {
 				const logo = document.getElementById("logo");
 				const logoUploader = document.getElementById("logoUploader");
 
@@ -128,7 +217,22 @@
 						reader.readAsDataURL(file);
 					}
 				});
-			});
+			}
+
+			function printInvoice() {
+				// Hide buttons before printing
+				document.getElementById("print-button").style.display = "none";
+				document.querySelectorAll(".hidden-on-print").forEach(el => el.style.display = "none");
+
+				// Print the page
+				window.print();
+
+				// Show buttons again after printing
+				setTimeout(() => {
+					document.getElementById("print-button").style.display = "block";
+					document.querySelectorAll(".hidden-on-print").forEach(el => el.style.display = "inline-block");
+				}, 1000);
+			}
 			
 		</script>
 
