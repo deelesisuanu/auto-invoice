@@ -17,7 +17,10 @@
 				<p>Client Email Address</p>
 				<p>(800) 555-1234</p>
 			</address>
-			<span><img alt="" src="assets/img/image.png" width="50" height="50"><input type="file" accept="image/*"></span>
+			<span>
+				<img id="logo" alt="" src="assets/img/image.png"/>
+				<input type="file" id="logoUploader" accept="image/*"/>
+			</span>
 		</header>
 		<article>
 			<h1>Recipient</h1>
@@ -101,6 +104,31 @@
 			function randomNumberRange(max, min) {
 				return Math.floor(Math.random() * (max - min + 1)) + min;
 			}
+
+			document.addEventListener("DOMContentLoaded", function () {
+				const logo = document.getElementById("logo");
+				const logoUploader = document.getElementById("logoUploader");
+
+				logoUploader.addEventListener("change", function (event) {
+					const file = event.target.files[0];
+
+					if (file) {
+						const reader = new FileReader();
+						reader.onload = function (e) {
+							const img = new Image();
+							img.src = e.target.result;
+
+							img.onload = function () {
+								// Set the logo's dimensions dynamically
+								logo.src = img.src;
+								logo.style.width = `${img.width}px`;
+								logo.style.height = `${img.height}px`;
+							};
+						};
+						reader.readAsDataURL(file);
+					}
+				});
+			});
 			
 		</script>
 
