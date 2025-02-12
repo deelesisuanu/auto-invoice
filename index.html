@@ -78,7 +78,12 @@
 				font-size: 12px;
 			}
 			.right-aligned {
-				text-align: right;
+				text-align: right;  /* Aligns text to the right */
+				white-space: pre-wrap; /* Allows multiple lines while preserving spacing */
+				font-family: monospace; /* Ensures spacing consistency */
+				border: 1px solid #ccc; /* Optional: adds a light border to show it's editable */
+				padding: 10px; /* Adds spacing for a better look */
+				min-width: 200px; /* Prevents shrinking */
 				margin-bottom: 40px;
 			}
 		</style>
@@ -193,7 +198,7 @@
 			</table>
 		</article>
 		<div class="right-aligned">
-			<p contenteditable="true">Addressed To</p>
+			<pre contenteditable="true">Addressed To</pre>
 		</div>
 		<aside>
 			<h1><span contenteditable>Additional Notes</span></h1>
