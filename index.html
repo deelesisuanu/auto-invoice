@@ -13,6 +13,14 @@
 				padding-top: 8px;
 				text-decoration: underline;
 			}
+			.remove-customer-fields {
+				background-color: #ff0000;
+				color: #EEEEEE;
+				padding: 10px;
+				margin-bottom: 20px;
+				border-radius: 8px;
+				border: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -30,7 +38,9 @@
 			</span>
 		</header>
 
-		<article>
+		<article id="customer-article-fields">
+			<a href="javascript:void(0);" class="remove-customer-fields hidden-on-print" onclick="removeCustomerInfo()" title="Not Needed? You can remove it">Remove Customer Info</a>
+			<br/><br/>
 			<h2 contenteditable="true">Customer Information</h2>
 			<table class="customer-info">
 				<thead>
@@ -232,6 +242,13 @@
 					document.getElementById("print-button").style.display = "block";
 					document.querySelectorAll(".hidden-on-print").forEach(el => el.style.display = "inline-block");
 				}, 1000);
+			}
+
+			function removeCustomerInfo() {
+				const customerSection = document.getElementById("customer-article-fields");
+				if (customerSection) {
+					customerSection.remove();
+				}
 			}
 			
 		</script>
