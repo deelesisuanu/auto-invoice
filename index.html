@@ -2,12 +2,16 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
 		<title>Invoice</title>
 		<link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="assets/css/style.css">
 		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
 		<script src="assets/js/script.js"></script>
 		<style>
+			body {
+				font-family: Arial, sans-serif;
+			}
 			h2 {
 				padding-bottom: 12px;
 				padding-top: 8px;
@@ -20,6 +24,58 @@
 				margin-bottom: 20px;
 				border-radius: 8px;
 				border: none;
+			}
+			/*body {*/
+			/*	overflow-y: auto;  !* Enables vertical scrolling *!*/
+			/*	max-height: 100vh;  !* Prevents content from being cut off *!*/
+			/*}*/
+			/*article {*/
+			/*	overflow-y: auto;  !* Allows the invoice section to scroll separately *!*/
+			/*	max-height: 80vh;  !* Limits height so Additional Notes remains visible *!*/
+			/*}*/
+
+			/* Editable address field */
+			address {
+				display: block;
+				width: 300px;
+				min-height: 50px;
+				padding: 10px;
+				/*border: 1px solid #ccc;*/
+				border-radius: 5px;
+				font-size: 16px;
+				line-height: 1.5;
+				cursor: text;
+			}
+
+			/* Toolbar styles */
+			#toolbar {
+				display: none;
+				position: absolute;
+				background: #fff;
+				padding: 5px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+				z-index: 1000;
+			}
+
+			#toolbar button {
+				font-size: 12px;
+				margin: 2px;
+				padding: 5px;
+				cursor: pointer;
+				border: none;
+				background: #f0f0f0;
+				border-radius: 3px;
+			}
+
+			#toolbar button:hover {
+				background: #ddd;
+			}
+
+			#toolbar select {
+				padding: 2px;
+				font-size: 12px;
 			}
 		</style>
 	</head>
@@ -45,7 +101,7 @@
 			<table class="customer-info">
 				<thead>
 				<tr id="customer-fields">
-					<th><span contenteditable>Full Name</span> <a class="remove-field">×</a></th>
+					<th><span contenteditable>Name</span> <a class="remove-field">×</a></th>
 					<th><span contenteditable>Email</span> <a class="remove-field">×</a></th>
 					<th><span contenteditable>Phone</span> <a class="remove-field">×</a></th>
 					<th><span contenteditable>Address</span> <a class="remove-field">×</a></th>
@@ -68,8 +124,18 @@
 
 		<article>
 			<h2 contenteditable="true">Addressed To</h2>
-			<address contenteditable="true">
-				<p>Digits<br>Designs &amp; Brands</p>
+			<!-- Formatting Toolbar -->
+			<div id="toolbar" class="toolbar">
+				<button id="bold-btn"><b>B</b></button>
+				<button id="italic-btn"><i>I</i></button>
+				<button id="underline-btn"><u>U</u></button>
+				<button id="increase-font">A+</button>
+				<button id="decrease-font">A-</button>
+			</div>
+
+			<!-- Editable Address -->
+			<address contenteditable="true" id="editable-address">
+				<span>Digits Designs &amp; Brands</span>
 			</address>
 			<table class="meta">
 				<tr>
@@ -152,6 +218,52 @@
 			document.addEventListener("DOMContentLoaded", function () {
 				manageLogoEvents();
 				manageCustomerEvents();
+
+				const toolbar = document.querySelector(".toolbar");
+				let activeEditable = null;
+
+				document.addEventListener("click", function (event) {
+					const editable = event.target.closest("[contenteditable='true']");
+					const isToolbarButton = event.target.closest(".toolbar button");
+
+					if (editable) {
+						activeEditable = editable;
+						toolbar.style.display = "block";
+						toolbar.style.top = `${editable.offsetTop - 40}px`;
+						toolbar.style.left = `${editable.offsetLeft}px`;
+					} else if (!isToolbarButton) {
+						toolbar.style.display = "none";
+					}
+				});
+
+				// Function to apply styling
+				function applyStyle(style, value) {
+					if (activeEditable) {
+						document.execCommand(style, false, value);
+						activeEditable.focus(); // Keep focus on the editable element
+					}
+				}
+
+				// Attach event listeners to toolbar buttons
+				document.querySelector("#bold-btn").addEventListener("click", function () {
+					applyStyle("bold");
+				});
+
+				document.querySelector("#italic-btn").addEventListener("click", function () {
+					applyStyle("italic");
+				});
+
+				document.querySelector("#underline-btn").addEventListener("click", function () {
+					applyStyle("underline");
+				});
+
+				document.querySelector("#increase-font").addEventListener("click", function () {
+					applyStyle("fontSize", "5"); // Adjust font size (1-7 for execCommand)
+				});
+
+				document.querySelector("#decrease-font").addEventListener("click", function () {
+					applyStyle("fontSize", "2");
+				});
 			});
 
 			function manageCustomerEvents() {
@@ -252,7 +364,7 @@
 					customerSection.remove();
 				}
 			}
-			
+
 		</script>
 
 	</body>
