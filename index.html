@@ -241,6 +241,29 @@
 					if (activeEditable) {
 						document.execCommand(style, false, value);
 						activeEditable.focus(); // Keep focus on the editable element
+
+						let currentStyle = window.getComputedStyle(activeEditable);
+
+						switch (style) {
+							case "bold":
+								activeEditable.style.fontWeight = currentStyle.fontWeight === "700" ? "normal" : "bold";
+								break;
+							case "italic":
+								activeEditable.style.fontStyle = currentStyle.fontStyle === "italic" ? "normal" : "italic";
+								break;
+							case "underline":
+								// activeEditable.style.textDecoration = currentStyle.textDecoration.includes("underline") ? "none" : "underline";
+								let textDecoration = currentStyle.textDecoration.includes("underline") ? "none" : "underline";
+								activeEditable.style.textDecoration = textDecoration;
+								activeEditable.style.textDecorationColor = "inherit"; // Ensure proper color
+								break;
+							case "fontSize":
+								let currentSize = parseInt(currentStyle.fontSize);
+								let newSize = value === "increase" ? currentSize + 2 : Math.max(currentSize - 2, 10);
+								activeEditable.style.fontSize = `${newSize}px`;
+								break;
+						}
+						activeEditable.focus(); // Keep focus on the editable element
 					}
 				}
 
